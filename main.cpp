@@ -73,15 +73,20 @@ void vertical_image(Image& image) {
     }
 }
 int main() {
+    Image image;
     cout << "Welcome to the Image Processing Program!" << endl;
-    cout << "Enter the name of the image file (with  validextension): ";
-    string filename;
-    cin >> filename;
-    Image image(filename);
-    if (image == false) {
-        cerr << "Error: No filename provided." << endl;
-        return 1;
+    while(true) {
+        cout << "Enter the name of the image file (with  validextension): ";
+        string filename;
+        cin >> filename;
+        try {
+            image.loadNewImage(filename);
+            break;
+        } catch (exception& e) {
+            cout << e.what() << endl;
+            cout << "Please try again." << endl;
+        }
     }
-    
+    // khloud continue from here na duse while true to make sure the menu works inifnite until the user choose exit    
     return 0;
 }
