@@ -73,5 +73,15 @@ void vertical_image(Image& image) {
     }
 }
 int main() {
-  return 0;
+    cout << "Welcome to the Image Processing Program!" << endl;
+    cout << "Enter the name of the image file (with  validextension): ";
+    string filename;
+    cin >> filename;
+    Image image(filename);
+    if (image == false) {
+        cerr << "Error: No filename provided." << endl;
+        return 1;
+    }
+    
+    return 0;
 }
