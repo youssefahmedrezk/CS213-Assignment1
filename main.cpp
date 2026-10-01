@@ -145,6 +145,99 @@ void applyresize(Image& image){
     }
     image = copy;
 }
+ void black_and_white(Image& image) {
+    for (int i =0;i< image.width ;i++) {
+        for (int j =0;j<image.height;j++) {
+            for (int k=1;k<image.channels;k++) {
+
+                int avr= (image(i,j,0)+image(i,j,1)+image(i,j,2))/3;
+                image(i,j,0)=avr;
+                image(i,j,1)=avr;
+                image(i,j,2)=avr;
+
+                if (avr >= 127.5)
+                    avr =255;
+                else
+                    avr = 0;
+                image(i,j,0) = avr;
+                image(i,j,1) = avr;
+                image(i,j,2) = avr;
+
+
+            }
+        }
+
+    }
+
+
+
+}
+Image rotateImage(const Image& img, int degree) {
+
+    switch (degree) {
+
+        case 90: {
+            Image output(image.height, image.width);
+
+            for (int x = 0; x < image.width; x++)
+                for (int y = 0; y < image.height; y++)
+                    for (int c = 0; c < image.channels; c++)
+                        output(img.height - 1 - y, x, c) = img(x, y, c);
+
+            return output;
+        }
+
+        case 180: {
+            Image output(image.width, image.height);
+
+            for (int x = 0; x < img.width; x++)
+                for (int y = 0; y < img.height; y++)
+                    for (int c = 0; c < img.channels; c++)
+                        output(image.width - 1 - x, image.height - 1 - y, c) = image(x, y, c);
+
+            return output;
+        }
+
+        case 270: {
+            Image out(image.height, image.width);
+
+            for (int x = 0; x < image.width; x++)
+                for (int y = 0; y < image.height; y++)
+                    for (int c = 0; c < image.channels; c++)
+                        output(y, image.width - 1 - x, c) = image(x, y, c);
+
+            return output;
+        }
+
+        default:
+            return image;
+    }
+}
+void black_and_white(Image& image) {
+    for (int i =0;i< image.width ;i++) {
+        for (int j =0;j<image.height;j++) {
+            for (int k=1;k<image.channels;k++) {
+
+                int avr= (image(i,j,0)+image(i,j,1)+image(i,j,2))/3;
+                image(i,j,0)=avr;
+                image(i,j,1)=avr;
+                image(i,j,2)=avr;
+
+                if (avr >= 127.5)
+                    avr =255;
+                else
+                    avr = 0;
+                image(i,j,0) = avr;
+                image(i,j,1) = avr;
+                image(i,j,2) = avr;
+
+
+            }
+        }
+
+    }
+
+}
 void loadImage(Image& image, string& currentName) {
     while (true) {
         cout << "Enter the name of the image file (with valid extension): ";
@@ -227,7 +320,8 @@ while (true) {
             saveCurrent(image, currentName);
             break;
         case 2:
-            //black_and_white(image);
+            black_and_white(image);
+            saveCurrent(image, currentName);
             break;
         case 3:
             invert_color(image);
@@ -239,7 +333,7 @@ while (true) {
             break;
         case 5: {
             int mode;
-            cout << "1: vertical"<<endl;
+            cout << "1:vertical"<<endl;
              cout<<"2:horizontal"<<endl;
             cin >> mode;
             if (mode == 1){
@@ -255,7 +349,8 @@ while (true) {
             break;
         }
         case 6:
-            //rotate_image(image);
+            rotateImage(image);
+            saveCurrent(image, currentName);
             break;
         case 7: {
             int mode;
