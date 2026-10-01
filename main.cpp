@@ -179,28 +179,18 @@ while (true) {
 
     switch (filter_num) {
         case 0: /* load new image, we do it next */ break;
-        case 1: gray_scale(image); break;
+        case 1:b reak;
         case 2: /* black_and_white(image); */ break;
-        case 3: invert_color(image); break;
-        case 4: frame(image); break;
-        case 5: {
-            int mode;
-            cout << "1: vertical, 2: horizontal: ";
-            cin >> mode;
-            if (mode == 1) vertical_image(image);
-            else if (mode == 2) horizontal_image(image);
-            else cout << "wrong mode" << endl;
-            break;
-        }
+        case 3:
+        frame(image);
+        break;
+        case 4:break;
+        case 5:break;
         case 6: /* rotate_image(image); */ break;
-        case 7: {
-            int mode;
-            cout << "1: lighten, 2: darken: ";
-            cin >> mode;
-            lighten_darken(image, mode);
-            break;
-        }
-        case 8: applyresize(image); break;
+        case 7:
+        applyresize(image);
+         break;
+        case 8: break;
         case 9: return 0;
         default: cout << "invalid choice" << endl;
     }
