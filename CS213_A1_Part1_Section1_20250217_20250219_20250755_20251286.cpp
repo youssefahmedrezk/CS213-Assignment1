@@ -1,9 +1,31 @@
+/*
+ * File: CS213_A1_Part1_Section1_20250217_20250219_20250755_20251286.cpp
+ * Purpose: Image processing program (console app). It loads an image,
+ *          applies filters, and saves the result. Part 1 of Assignment 1.
+ *
+ * Course: CS213 Object Oriented Programming, FCAI, Cairo University
+ * Instructor: Dr. Mohammad El-Ramly
+ * Section: (S1) 
+ * TA: Mennat Allah Mamdouh
+ * Team:
+ *   1. Kholoud Mohammed Abd El-Rahman - ID: 20250217
+ *   2. Farha Mohammed Abd El-kareem - ID: 20251286
+ *   3. Youssef Ahmed Rezk Ragab - ID: 20250755
+ *   4. Demiana Samir Fawzy - ID: 20250219
+ *
+ * Who did what:
+ *   Kholoud: Filter 1 (Grayscale), Filter 5 (Flip)
+ *   Youssef: Filter 3 (Invert), Filter 7 (Lighten and Darken)
+ *   Farha:   Filter 4 (Frame), Filter 8 (Resize)
+ *   Menu and main function were implemented by all team members.
+ */
+
 #include "Image_Class.h"
 #include <iostream>
 #include <string>
 using namespace std;
-//================================================================================
-//youssef part
+
+
 void invert_color(Image& image) {
     for (int i = 0; i < image.width; i++)
     {
@@ -32,14 +54,11 @@ void lighten_darken(Image& image,int mode) {
                 {
                     image(i,j,k) = image(i,j,k)/2;
                 }
-                else{
-                cout<<"wrong mode"<<endl;}
             }
         }
     }
 }
-//==============================================================================
-//kholoud part
+
 void gray_scale(Image& image) {
     for (int i =0;i< image.width ;i++) {
         for (int j =0;j<image.height;j++) {
@@ -54,6 +73,7 @@ void gray_scale(Image& image) {
         }
     }
 }
+
 void horizontal_image(Image& image) {
     for (int i =0;i< (image.width/2) ;i++) {
         for (int j =0;j<(image.height);j++) {
@@ -74,14 +94,14 @@ void vertical_image(Image& image) {
         }
     }
 }
-//================================================================================
-//Farha part
+
 void frame(Image& image){
    int choice;
     cout << "choose the frame"<<endl;
-    cout<<"1 simple frame"<<endl;
-    cout<<"2 fancy frame"<<endl;
-    cin>>choice ;
+    cout<<"1. simple frame"<<endl;
+    cout<<"2. fancy frame"<<endl;
+    cout<<"please choose the frame: ";
+    cin>>choice;
     int frameshape= 10;
     
     if(choice==1){
@@ -128,7 +148,7 @@ void frame(Image& image){
 
 void applyresize(Image& image){
     int newwidth ,newheight;
-    cout<<"enter the new width and height";
+    cout<<"enter the new width and height respectively: ";
     cin>>newwidth>>newheight;
     double widthratio = image.width / (double)newwidth;
     double heightratio = image.height / (double)newheight;
@@ -234,6 +254,12 @@ void saveCurrent(Image& image, string& currentName) {
         cout << "Save on the same file or a new name? (1 = same, 2 = new): ";
         int option;
         cin >> option;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Please enter a number." << endl;
+            continue;
+        }
 
         string name;
         if (option == 1) {
@@ -279,12 +305,19 @@ while (true) {
 
     int filter_num;
     cin >> filter_num;
-
+    if (cin.fail()) {
+       cin.clear();
+       cin.ignore(10000, '\n');
+       cout << "Please enter a number." << endl;
+       continue;
+    }
+    cin.ignore(10000, '\n');
     switch (filter_num) {
         case 0: {
            char answer;
            cout << "Save the current image first? (y/n): ";
            cin >> answer;
+           answer = tolower(answer);
            if (answer == 'y') {
                saveCurrent(image, currentName);
            }
@@ -293,7 +326,6 @@ while (true) {
         } 
         case 1:
             gray_scale(image);
-            saveCurrent(image, currentName);
             break;
         case 2:
             black_and_white(image);
@@ -301,13 +333,12 @@ while (true) {
             break;
         case 3:
             invert_color(image);
-            saveCurrent(image, currentName);
             break;
         case 4:
             frame(image);
-            saveCurrent(image, currentName);
             break;
         case 5: {
+<<<<<<< HEAD:main.cpp
             int mode;
             cout << "1:vertical"<<endl;
              cout<<"2:horizontal"<<endl;
@@ -324,6 +355,34 @@ while (true) {
             saveCurrent(image, currentName);
             break;
         }
+=======
+            while (true) {
+              int mode;
+              cout << "1: vertical"<<endl;
+              cout<<"2:horizontal"<<endl;
+              cout<<"please choose the mode: ";
+              cin >> mode;
+              if (cin.fail()) {
+                 cin.clear();
+                 cin.ignore(10000, '\n');
+                 cout << "Please enter a number." << endl;
+                 continue;
+              }
+              if (mode == 1){
+                 vertical_image(image);
+                 break;
+              } 
+              else if (mode == 2){
+                  horizontal_image(image);
+                  break;
+              } 
+              else{
+                  cout<<"Invalid mode. Please choose 1 or 2."<<endl;
+               } 
+            }
+            break; 
+        } 
+>>>>>>> 3cc6147412553b1ebdc7f5d463c9d8f1844504ae:CS213_A1_Part1_Section1_20250217_20250219_20250755_20251286.cpp
         case 6:
             cout<<"please choose the degree (from 1 to 3): "<<endl;
             cout<<"1.rotate 90"<<endl;
@@ -336,24 +395,44 @@ while (true) {
             saveCurrent(image, currentName);
             break;
         case 7: {
-            int mode;
-            cout << "1: lighten Image"<<endl;
-            cout<<"2: Darken Image"<<endl;
-            cout<<"please choose the mode: "<<endl;
-            cin >> mode;
-            lighten_darken(image, mode);
-            saveCurrent(image, currentName);
+            while (true){
+                int mode;
+                cout << "1: lighten Image"<<endl;
+                cout<<"2: Darken Image"<<endl;
+                cout<<"please choose the mode: "<<endl;
+                cin >> mode;
+                if (cin.fail()) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Please enter a number." << endl;
+                    continue;
+                } 
+                if (mode == 1 || mode == 2) {
+                    lighten_darken(image, mode);
+                    break;
+                }
+                else {
+                    cout << "Invalid mode. Please choose 1 or 2." << endl;
+                }
+            }
             break;
         }
         case 8:
             applyresize(image);
-            saveCurrent(image, currentName);
             break;
         case 9:
             saveCurrent(image, currentName);
             break;
-        case 10:
+        case 10:{
+            char answer;
+            cout << "Save before exit? (y/n): ";
+            cin >> answer;
+            answer = tolower(answer);
+            if (answer == 'y') {
+               saveCurrent(image, currentName);
+            }
             return 0;
+        }   
         default:
             cout << "invalid choice" << endl;
     }
