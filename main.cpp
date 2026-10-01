@@ -161,66 +161,49 @@ int main() {
             cout << "Please try again." << endl;
         }
     }
-
-    cout<<"0 : Load New Image "<<endl;
-    cout << "1: Grayscale Conversion"<<endl;
-    cout << "2: Black and White"<<endl;
-    cout << "3: Invert Image"<<endl;
-    cout << " 4: Adding a Frame"<<endl;
-    cout << "5: Flip Image"<<endl;
-    cout<<"6: Rotate Image"<<endl;
-    cout<<"7: Darken and Lighten Image"<<endl;
-    cout<<"8: Resizing Images"<<endl;
-    cout<<"9 :Do you want exit?" <<endl;
-    cout<<"choose From 0 to 9"<<endl;
-
+while (true) {
+    cout << "0: Load New Image" << endl;
+    cout << "1: Grayscale Conversion" << endl;
+    cout << "2: Black and White" << endl;
+    cout << "3: Invert Image" << endl;
+    cout << "4: Adding a Frame" << endl;
+    cout << "5: Flip Image" << endl;
+    cout << "6: Rotate Image" << endl;
+    cout << "7: Darken and Lighten Image" << endl;
+    cout << "8: Resizing Images" << endl;
+    cout << "9: Exit" << endl;
+    cout << "Choose from 0 to 9: ";
 
     int filter_num;
-    cin >> filter_num;
-    while (true){
-    switch(filter_num) {
-        case 1:
-            gray_scale(image);
-            break;
-        case 2:
-            // black_and_white(image);
-            break;
-        case 3:
-            invert_color(image);
-            break;
-        case 4:
-            // add_frame(image);
-            break;
-        case 5:
-            cout<<"enter flipped mode";
-            int mode;
-            cin>>mode;
-            if (mode==1) {
-                vertical_image(image);
-            }
-            else if (mode==2) {
-                horizontal_image(image);
-            }
-            else {
-                cout<<"wrong mode"<<endl;
-            }
-            break;
-        case 6 :
-            //rotate_image(image);
-            break;
-        case 7:
-            cout<<"1 : darken"<<endl;
-            cout<<"2 : lighten"<<endl;
-            cout<<"choose number of the mode"<<endl;
-            int mode;
-            cin>>mode;
-            lighten_darken(image,mode);
-            break;
-        default :
-            //resize_image(image);
-            break;
-    }
-    }
+    cin >> filter_num;      // inside the loop now
 
+    switch (filter_num) {
+        case 0: /* load new image, we do it next */ break;
+        case 1: gray_scale(image); break;
+        case 2: /* black_and_white(image); */ break;
+        case 3: invert_color(image); break;
+        case 4: frame(image); break;
+        case 5: {
+            int mode;
+            cout << "1: vertical, 2: horizontal: ";
+            cin >> mode;
+            if (mode == 1) vertical_image(image);
+            else if (mode == 2) horizontal_image(image);
+            else cout << "wrong mode" << endl;
+            break;
+        }
+        case 6: /* rotate_image(image); */ break;
+        case 7: {
+            int mode;
+            cout << "1: lighten, 2: darken: ";
+            cin >> mode;
+            lighten_darken(image, mode);
+            break;
+        }
+        case 8: applyresize(image); break;
+        case 9: return 0;
+        default: cout << "invalid choice" << endl;
+    }
+}
     return 0;
 }
