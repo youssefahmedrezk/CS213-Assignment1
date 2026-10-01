@@ -166,6 +166,74 @@ void applyresize(Image& image){
     }
     image = copy;
 }
+void black_and_white(Image& image) {
+    for (int i =0;i< image.width ;i++) {
+        for (int j =0;j<image.height;j++) {
+            for (int k=1;k<image.channels;k++) {
+
+                int avr= (image(i,j,0)+image(i,j,1)+image(i,j,2))/3;
+                image(i,j,0)=avr;
+                image(i,j,1)=avr;
+                image(i,j,2)=avr;
+
+                if (avr >= 127.5)
+                    avr =255;
+                else
+                    avr = 0;
+                image(i,j,0) = avr;
+                image(i,j,1) = avr;
+                image(i,j,2) = avr;
+
+
+            }
+        }
+
+    }
+
+
+
+}
+Image rotate_image(const Image& image, int degree) {
+
+    switch (degree) {
+
+        case 90: {
+            Image output(image.height, image.width);
+
+            for (int x = 0; x < image.width; x++)
+                for (int y = 0; y < image.height; y++)
+                    for (int c = 0; c < image.channels; c++)
+                        output(image.height - 1 - y, x, c) = image(x, y, c);
+
+            return output;
+        }
+
+        case 180: {
+            Image output(image.width, image.height);
+
+            for (int x = 0; x < image.width; x++)
+                for (int y = 0; y < image.height; y++)
+                    for (int c = 0; c < image.channels; c++)
+                        output(image.width - 1 - x, image.height - 1 - y, c) = image(x, y, c);
+
+            return output;
+        }
+
+        case 270: {
+            Image output(image.height, image.width);
+
+            for (int x = 0; x < image.width; x++)
+                for (int y = 0; y < image.height; y++)
+                    for (int c = 0; c < image.channels; c++)
+                        output(y, image.width - 1 - x, c) = image(x, y, c);
+
+            return output;
+        }
+
+        default:
+            return image;
+    }
+}
 void loadImage(Image& image, string& currentName) {
     while (true) {
         cout << "Enter the name of the image file (with valid extension): ";
@@ -260,7 +328,7 @@ while (true) {
             gray_scale(image);
             break;
         case 2:
-            //black_and_white(image);
+            black_and_white(image);
             break;
         case 3:
             invert_color(image);
@@ -295,9 +363,20 @@ while (true) {
             }
             break; 
         } 
-        case 6:
-            //rotate_image(image);
+        case 6:{
+            int degree;
+            cout << "Enter the degree of rotation (90, 180, 270): ";
+            cin >> degree;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "Please enter a number." << endl;
+                continue;
+            }
+            image = rotate_image(image, degree);
             break;
+        }
+            
         case 7: {
             while (true){
                 int mode;
