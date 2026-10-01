@@ -212,7 +212,16 @@ while (true) {
     cin >> filter_num;
 
     switch (filter_num) {
-        case 0: /* load new image, we do it next */ break;
+        case 0: {
+           char answer;
+           cout << "Save the current image first? (y/n): ";
+           cin >> answer;
+           if (answer == 'y') {
+               saveCurrent(image, currentName);
+           }
+           loadImage(image, currentName);
+           break;
+        } 
         case 1: gray_scale(image); break;
         case 2: /* black_and_white(image); */ break;
         case 3: invert_color(image); break;
@@ -235,7 +244,8 @@ while (true) {
             break;
         }
         case 8: applyresize(image); break;
-        case 9: return 0;
+        case 9: saveCurrent(image, currentName); break;
+        case 10: return 0;
         default: cout << "invalid choice" << endl;
     }
 }
