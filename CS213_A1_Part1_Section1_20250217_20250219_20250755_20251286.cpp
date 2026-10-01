@@ -1,5 +1,5 @@
 /*
- * File: CS213_A1_Part1_Section 1_20250217_20250219_20250755_20251286.cpp
+ * File: CS213_A1_Part1_Section1_20250217_20250219_20250755_20251286.cpp
  * Purpose: Image processing program (console app). It loads an image,
  *          applies filters, and saves the result. Part 1 of Assignment 1.
  *
@@ -8,7 +8,7 @@
  * Section: (S1) 
  * TA: Mennat Allah Mamdouh
  * Team:
- *   1. Kholoud Ahmed El-Sayed - ID: 20250217
+ *   1. Kholoud Mahmoud Abd El-Rahman - ID: 20250217
  *   2. Farha Mahamoud Abd El-kareem - ID: 20251286
  *   3. Youssef Ahmed Rezk Ragab - ID: 20250755
  *   4. Demiana Samir Fawzy - ID: 20250219
