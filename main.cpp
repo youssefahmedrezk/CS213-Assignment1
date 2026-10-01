@@ -213,31 +213,7 @@ Image rotateImage(const Image& img, int degree) {
             return image;
     }
 }
-void black_and_white(Image& image) {
-    for (int i =0;i< image.width ;i++) {
-        for (int j =0;j<image.height;j++) {
-            for (int k=1;k<image.channels;k++) {
 
-                int avr= (image(i,j,0)+image(i,j,1)+image(i,j,2))/3;
-                image(i,j,0)=avr;
-                image(i,j,1)=avr;
-                image(i,j,2)=avr;
-
-                if (avr >= 127.5)
-                    avr =255;
-                else
-                    avr = 0;
-                image(i,j,0) = avr;
-                image(i,j,1) = avr;
-                image(i,j,2) = avr;
-
-
-            }
-        }
-
-    }
-
-}
 void loadImage(Image& image, string& currentName) {
     while (true) {
         cout << "Enter the name of the image file (with valid extension): ";
@@ -349,7 +325,14 @@ while (true) {
             break;
         }
         case 6:
-            rotateImage(image);
+            cout<<"please choose the degree (from 1 to 3): "<<endl;
+            cout<<"1.rotate 90"<<endl;
+            cout<<"2.rotate 180"<<endl;;
+            cout<<"3.rotate 270"<<endl;
+            int degree;
+            cin >> degree;
+            rotateImage(image,degree);
+
             saveCurrent(image, currentName);
             break;
         case 7: {
