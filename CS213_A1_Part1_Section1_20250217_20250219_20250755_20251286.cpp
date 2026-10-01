@@ -20,10 +20,11 @@
  *   Farha:   Filter 4 (Frame), Filter 8 (Resize)
  *   Menu and main function were implemented by all team members.
  */
-
 #include "Image_Class.h"
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <cctype>
 using namespace std;
 
 
