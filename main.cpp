@@ -89,9 +89,9 @@ void frame(Image& image){
         for(int j=0; j<image.width; j++){
             if(i<frameshape||i>=image.height-frameshape||j<frameshape||
                 j>=image.width-frameshape){
-                    image(i,j,0)=0;
-                    image(i,j,1)=255;
-                    image(i,j,2)=0;
+                    image(j,i,0)=0;
+                    image(j,i,1)=255;
+                    image(j,i,2)=0;
             }
         }
     }
@@ -103,21 +103,21 @@ void frame(Image& image){
         for(int j=0; j<image.width; j++){
             if(i<linethick|| i>=image.height-linethick||
             j<linethick|| j>=image.width-linethick){
-                image(i,j,0)=255;
-                image(i,j,1)=0;
-                image(i,j,2)=0;
+                image(j,i,0)=255;
+                image(j,i,1)=0;
+                image(j,i,2)=0;
             }
             else if(i<linethick*2 || i>=image.height-linethick*2||
             j<linethick*2 || j>=image.width-linethick*2){
-                image(i,j,0)=0;
-                image(i,j,1)=255;
-                image(i,j,2)=0;
+                image(j,i,0)=0;
+                image(j,i,1)=255;
+                image(j,i,2)=0;
             }
             else if (i<linethick*3 || i>=image.height-linethick*3||
                 j<linethick*3 || j>=image.width-linethick*3){
-                image(i,j,0)=0;
-                image(i,j,1)=0;
-                image(i,j,2)=255;
+                image(j,i,0)=0;
+                image(j,i,1)=0;
+                image(j,i,2)=255;
 
             }
     
@@ -144,7 +144,7 @@ void applyresize(Image& image){
         }
     }
     image = copy;
-   }
+}
 
 int main() {
     Image image;
