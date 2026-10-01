@@ -148,8 +148,8 @@ void applyresize(Image& image){
 
 int main() {
     Image image;
-    cout << "Welcome to the Image Processing Program!" << endl;
     while(true) {
+        cout << "Welcome to the Image Processing Program!" << endl;
         cout << "Enter the name of the image file (with valid extension): ";
         string filename;
         cin >> filename;
@@ -163,17 +163,21 @@ int main() {
     }
     // khloud continue from here na duse while true to make sure the menu works inifnite until the user choose exit
 cout<<"-------------please enter filter number (choose from 1:8)--------------------------";
-    cout << "Filter 1: Grayscale Conversion"<<endl;
-    cout << "Filter 2: Black and White"<<endl;
-    cout << "Filter 3: Invert Image"<<endl;
-    cout << "Filter 4: Adding a Frame"<<endl;
-    cout << "Filter 5: Flip Image"<<endl;
-    cout<<"Filter 6: Rotate Image"<<endl;
-    cout<<"Filter 7: Darken and Lighten Image"<<endl;
-    cout<<"Filter 8: Resizing Images"<<endl;
+    cout<<"0 : Load New Image "<<endl;
+    cout << "1: Grayscale Conversion"<<endl;
+    cout << "2: Black and White"<<endl;
+    cout << "3: Invert Image"<<endl;
+    cout << " 4: Adding a Frame"<<endl;
+    cout << "5: Flip Image"<<endl;
+    cout<<"6: Rotate Image"<<endl;
+    cout<<"7: Darken and Lighten Image"<<endl;
+    cout<<"8: Resizing Images"<<endl;
+    cout<<"9 :Do you want exit?" <<endl;
+
 
     int filter_num;
     cin >> filter_num;
+    while (true){
     switch(filter_num) {
         case 1:
             gray_scale(image);
@@ -212,11 +216,11 @@ cout<<"-------------please enter filter number (choose from 1:8)----------------
             cin>>mode;
             lighten_darken(image,mode);
             break;
-        case 8 :
+        default :
             //resize_image(image);
             break;
     }
-
+    }
 
     return 0;
 }
