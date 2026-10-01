@@ -74,6 +74,78 @@ void vertical_image(Image& image) {
         }
     }
 }
+//================================================================================
+//Farha part
+void frame(Image& image){
+   int choice;
+    cout << "choose the frame"<<endl;
+    cout<<"1 simple frame"<<endl;
+    cout<<"2 fancy frame"<<endl;
+    cin>>choice ;
+    int frameshape= 10;
+    
+    if(choice==1){
+        for(int i=0; i<image.height; i++){
+        for(int j=0; j<image.width; j++){
+            if(i<frameshape||i>=image.height-frameshape||j<frameshape||
+                j>=image.width-frameshape){
+                    image(i,j,0)=0;
+                    image(i,j,1)=255;
+                    image(i,j,2)=0;
+            }
+        }
+    }
+    }
+    else if(choice==2){
+    int linethick=frameshape /3;
+    if(linethick<1)linethick=1;
+    for(int i=0; i<image.height; i++){
+        for(int j=0; j<image.width; j++){
+            if(i<linethick|| i>=image.height-linethick||
+            j<linethick|| j>=image.width-linethick){
+                image(i,j,0)=255;
+                image(i,j,1)=0;
+                image(i,j,2)=0;
+            }
+            else if(i<linethick*2 || i>=image.height-linethick*2||
+            j<linethick*2 || j>=image.width-linethick*2){
+                image(i,j,0)=0;
+                image(i,j,1)=255;
+                image(i,j,2)=0;
+            }
+            else if (i<linethick*3 || i>=image.height-linethick*3||
+                j<linethick*3 || j>=image.width-linethick*3){
+                image(i,j,0)=0;
+                image(i,j,1)=0;
+                image(i,j,2)=255;
+
+            }
+    
+        }
+    }
+    }
+}
+
+void applyresize(Image& image){
+    int newwidth ,newheight;
+    cout<<"enter the new width and height";
+    cin>>newwidth>>newheight;
+    double widthratio = image.width / (double)newwidth;
+    double heightratio = image.height / (double)newheight;
+    Image copy(newwidth, newheight) ;  
+    for(int i=0; i<newheight; i++){
+       for(int j=0; j<newwidth; j++){
+           int y = i * heightratio;
+           int x = j * widthratio;
+           for(int c =0 ; c < 3; c++){
+             copy(j,i,c)= image(x,y,c);
+
+           }
+        }
+    }
+    image = copy;
+   }
+
 int main() {
     Image image;
     cout << "Welcome to the Image Processing Program!" << endl;
