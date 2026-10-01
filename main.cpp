@@ -161,8 +161,7 @@ int main() {
             cout << "Please try again." << endl;
         }
     }
-    // khloud continue from here na duse while true to make sure the menu works inifnite until the user choose exit
-cout<<"-------------please enter filter number (choose from 1:8)--------------------------";
+
     cout<<"0 : Load New Image "<<endl;
     cout << "1: Grayscale Conversion"<<endl;
     cout << "2: Black and White"<<endl;
@@ -173,6 +172,7 @@ cout<<"-------------please enter filter number (choose from 1:8)----------------
     cout<<"7: Darken and Lighten Image"<<endl;
     cout<<"8: Resizing Images"<<endl;
     cout<<"9 :Do you want exit?" <<endl;
+    cout<<"choose From 0 to 9"<<endl;
 
 
     int filter_num;
