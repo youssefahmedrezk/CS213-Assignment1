@@ -239,11 +239,19 @@ while (true) {
             break;
         case 5: {
             int mode;
-            cout << "1: vertical, 2: horizontal: ";
+            cout << "1: vertical"<<endl;
+             cout<<"2:horizontal"<<endl;
             cin >> mode;
-            if (mode == 1) vertical_image(image);
-            else if (mode == 2) horizontal_image(image);
-            else cout << "wrong mode" << endl;
+            if (mode == 1){
+                vertical_image(image);
+            } 
+            else if (mode == 2){
+                horizontal_image(image);
+            } 
+            else{
+                cout<<"wrong mode"<<endl;
+            } 
+            saveCurrent(image, currentName);
             break;
         }
         case 6:
