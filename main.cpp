@@ -222,10 +222,21 @@ while (true) {
            loadImage(image, currentName);
            break;
         } 
-        case 1: gray_scale(image); break;
-        case 2: /* black_and_white(image); */ break;
-        case 3: invert_color(image); break;
-        case 4: frame(image); break;
+        case 1:
+            gray_scale(image);
+            saveCurrent(image, currentName);
+            break;
+        case 2:
+            //black_and_white(image);
+            break;
+        case 3:
+            invert_color(image);
+            saveCurrent(image, currentName);
+            break;
+        case 4:
+            frame(image);
+            saveCurrent(image, currentName);
+            break;
         case 5: {
             int mode;
             cout << "1: vertical, 2: horizontal: ";
@@ -235,18 +246,30 @@ while (true) {
             else cout << "wrong mode" << endl;
             break;
         }
-        case 6: /* rotate_image(image); */ break;
+        case 6:
+            //rotate_image(image);
+            break;
         case 7: {
             int mode;
-            cout << "1: lighten, 2: darken: ";
+            cout << "1: lighten Image"<<endl;
+            cout<<"2: Darken Image"<<endl;
+            cout<<"please choose the mode: "<<endl;
             cin >> mode;
             lighten_darken(image, mode);
+            saveCurrent(image, currentName);
             break;
         }
-        case 8: applyresize(image); break;
-        case 9: saveCurrent(image, currentName); break;
-        case 10: return 0;
-        default: cout << "invalid choice" << endl;
+        case 8:
+            applyresize(image);
+            saveCurrent(image, currentName);
+            break;
+        case 9:
+            saveCurrent(image, currentName);
+            break;
+        case 10:
+            return 0;
+        default:
+            cout << "invalid choice" << endl;
     }
 }
     return 0;
