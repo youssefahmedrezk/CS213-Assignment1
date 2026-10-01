@@ -148,8 +148,8 @@ void applyresize(Image& image){
 
 int main() {
     Image image;
+    cout << "Welcome to the Image Processing Program!" << endl;
     while(true) {
-        cout << "Welcome to the Image Processing Program!" << endl;
         cout << "Enter the name of the image file (with valid extension): ";
         string filename;
         cin >> filename;
