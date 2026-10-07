@@ -235,6 +235,43 @@ Image rotate_image(const Image& image, int degree) {
             return image;
     }
 }
+
+void crop_image(Image& image){
+    int x, y, w, h;
+    while (true){
+        cout << "Image size: " << image.width << " x " << image.height << endl;    
+        cout << "Enter start point x y: ";
+        cin >> x >> y;
+        cout << "Enter width height: ";
+        cin >> w >> h;
+        
+        if (x >= 0 && y >= 0 && w > 0 && h > 0 && x + w <= image.width && y + h <= image.height) {
+            break;
+        }
+        else{
+            cout<<"Wrong dimensions, try again." << endl;
+        }
+    }
+    Image cropped(w, h);
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < h; j++) {
+             for (int k = 0; k < 3; k++) {
+                 cropped(i, j, k) = image(x + i, y + j, k);
+             }
+        }
+    }
+    image = cropped;
+}
+
+void purple_image(Image& image){
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            image(i, j, 0) = image(i, j, 0)*0.90;
+            image(i, j, 1) = image(i, j, 1)*0.70; 
+        }
+    }
+}
+
 void loadImage(Image& image, string& currentName) {
     while (true) {
         cout << "Enter the name of the image file (with valid extension): ";
@@ -284,43 +321,6 @@ void saveCurrent(Image& image, string& currentName) {
         }
     }
 }
-
-void crop_image(Image& image){
-    int x, y, w, h;
-    while (true){
-        cout << "Image size: " << image.width << " x " << image.height << endl;    
-        cout << "Enter start point x y: ";
-        cin >> x >> y;
-        cout << "Enter width height: ";
-        cin >> w >> h;
-        
-        if (x >= 0 && y >= 0 && w > 0 && h > 0 && x + w <= image.width && y + h <= image.height) {
-            break;
-        }
-        else{
-            cout<<"Wrong dimensions, try again." << endl;
-        }
-    }
-    Image cropped(w, h);
-    for (int i = 0; i < w; i++) {
-        for (int j = 0; j < h; j++) {
-             for (int k = 0; k < 3; k++) {
-                 cropped(i, j, k) = image(x + i, y + j, k);
-             }
-        }
-    }
-    image = cropped;
-}
-
-void purple_image(Image& image){
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            image(i, j, 0) = image(i, j, 0)*0.90;
-            image(i, j, 1) = image(i, j, 1)*0.70; 
-        }
-    }
-}
-
 int main() {
     Image image;
     cout << "Welcome to the Image Processing Program!" << endl;
