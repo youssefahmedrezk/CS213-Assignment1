@@ -15,7 +15,7 @@
  *
  * Who did what:
  *   Kholoud: Filter 1 (Grayscale), Filter 5 (Flip)
- *   Kholoud: Filter 2 (white and black), Filter 6 (Rotate)
+ *   Demiana: Filter 2 (white and black), Filter 6 (Rotate)
  *   Youssef: Filter 3 (Invert), Filter 7 (Lighten and Darken)
  *   Farha:   Filter 4 (Frame), Filter 8 (Resize)
  *   Menu and main function were implemented by all team members.
