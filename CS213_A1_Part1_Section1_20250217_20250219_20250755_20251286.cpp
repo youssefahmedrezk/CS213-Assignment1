@@ -379,7 +379,59 @@ void common_area_merge(Image &image1, Image &image2)
 
     merged_image.saveImage("common_area.jpg");
 }
+void blur(Image& image) {
+    Image oldimage = image;
+    int level;
+    cout << "enter the level";
+    cin >> level;
+    int r =1;
+    if(level == 1){
+        r = 3;
+    }
+    else if(level == 2){
+        r =7;
+    }
+    else if(level == 3){
+        r = 9;
+    }
+    for (int i = 0; i<image.width; i++){
+        for(int j = 0; j<image.height; j++){
+            int sumr = 0;
+            int sumg = 0;
+            int sumb = 0;
+            int count = 0;
+            for(int di = -r; di<=r; di++){
+                for(int dj = -r; dj<=r; dj++){
+                    int ni = i + di;
+                    int nj = j + dj;
+                    if(ni >= 0 && ni < image.width && nj >= 0 && nj <image.height){
+                        sumr += oldimage(ni,nj,0);
+                        sumg += oldimage(ni,nj,1);
+                        sumb += oldimage(ni,nj,2);
+                        count++;
+                    }
+                }
+            }
+            image(i,j,0) = sumr / count;
+            image(i,j,1) = sumg / count;
+            image(i,j,2) = sumb / count;
+        }
+    }
 
+}
+void infraredfilter(Image& old_photo){
+    Image new_photo(old_photo.width, old_photo.height);
+    for(int i = 0; i< old_photo.width; i++){
+        for(int j = 0; j< old_photo.height; j++){
+            unsigned char r = old_photo(i,j,0);
+            new_photo(i,j,0) = 255;
+            new_photo(i,j,1) = 255 -r ;
+            new_photo(i,j,2) = 255 -r ;
+        }
+    }
+    old_photo = new_photo;
+    
+}
 
 void loadImage(Image& image, string& currentName) {
     while (true) {
