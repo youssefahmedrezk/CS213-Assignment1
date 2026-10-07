@@ -272,6 +272,115 @@ void purple_image(Image& image){
     }
 }
 
+void sun_light (Image & image) {
+    for (int i = 0 ; i < image.width ; i++) {
+        for (int j = 0 ; j < image.height ; j++) {
+            image(i,j,0) = image(i,j,0)+(255-image(i,j,0))/2;
+            image(i,j,1) = image(i,j,1)+(255-image(i,j,1))/2;
+
+
+        }
+    }
+}
+
+void merge_images(Image &image1, Image &image2, int new_width, int new_height){
+    Image merged_image(new_width, new_height);
+
+    for (int i = 0; i < new_width; i++)
+    {
+        for (int j = 0; j < new_height; j++)
+        {
+            merged_image(i, j, 0) =(image1(i, j, 0) + image2(i, j, 0)) / 2;
+
+            merged_image(i, j, 1) =(image1(i, j, 1) + image2(i, j, 1)) / 2;
+
+            merged_image(i, j, 2) =(image1(i, j, 2) + image2(i, j, 2)) / 2;
+        }
+    }
+
+    merged_image.saveImage("merged.jpg");
+}
+
+void resizing_images(Image &image1, Image &image2)
+{
+    if (image1.height > image2.height or image1.width > image2.width) //image 2 small
+    {
+        Image resized_image2(image1.width, image1.height);
+
+        double ratio_w2 = double(image2.width) / image1.width;
+
+        double ratio_h2 = double(image2.height) / image1.height;
+
+        for (int i = 0; i < image1.width; i++)
+        {
+            for (int j = 0; j < image1.height; j++)
+            {
+                int old_width = i * ratio_w2;
+                int old_height = j * ratio_h2;
+
+                for (int k = 0; k < 3; k++)
+                {
+                    resized_image2(i, j, k) = image2(old_width, old_height, k);
+                }
+            }
+        }
+
+        merge_images(image1,resized_image2,image1.width,image1.height);
+    }
+
+    else if (image2.height > image1.height or image2.width > image1.width) //image 1 small
+    {
+        Image resized_image1(image2.width, image2.height);
+
+        double ratio_w1 =double(image1.width) / image2.width;
+
+        double ratio_h1 =double(image1.height) / image2.height;
+
+        for (int i = 0; i < image2.width; i++)
+        {
+            for (int j = 0; j < image2.height; j++)
+            {
+                int old_width = i * ratio_w1;
+                int old_height = j * ratio_h1;
+
+                for (int k = 0; k < 3; k++)
+                {
+                    resized_image1(i, j, k) = image1(old_width, old_height, k);
+                }
+            }
+        }
+
+        merge_images(resized_image1,image2,image2.width,image2.height);
+    }
+    else if (image1.width == image2.height && image2.width == image1.width) {
+         merge_images(image1,image2,image1.width,image1.height);
+    }
+
+}
+
+void common_area_merge(Image &image1, Image &image2)
+{
+    int common_width = min(image1.width, image2.width);
+
+    int common_height =min(image1.height, image2.height);
+
+    Image merged_image(common_width, common_height);
+
+    for (int i = 0; i < common_width; i++)
+    {
+        for (int j = 0; j < common_height; j++)
+        {
+            for (int k = 0; k < 3; k++)
+            {
+                merged_image(i, j, k) =(image1(i, j, k)+ image2(i, j, k)) / 2;
+            }
+        }
+    }
+
+    merged_image.saveImage("common_area.jpg");
+}
+
+
 void loadImage(Image& image, string& currentName) {
     while (true) {
         cout << "Enter the name of the image file (with valid extension): ";
