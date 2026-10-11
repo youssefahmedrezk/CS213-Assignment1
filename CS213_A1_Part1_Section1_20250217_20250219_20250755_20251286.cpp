@@ -758,7 +758,6 @@ void saveCurrent(Image& image, string& currentName) {
 
         try {
             image.saveImage(name);
-            currentName = name;
             cout << "Image saved." << endl;
             break;
         } catch (exception& e) {
