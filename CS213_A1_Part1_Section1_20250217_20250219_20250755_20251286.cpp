@@ -432,6 +432,77 @@ void infraredfilter(Image& old_photo){
     old_photo = new_photo;
     
 }
+void detectEdges(Image& img, Image& newImg, int threshold) {
+
+    for (int i = 0; i < img.width; i++) {
+        for (int j = 0; j < img.height; j++) {
+            newImg.setPixel(i, j, 0, 255);
+            newImg.setPixel(i, j, 1, 255);
+            newImg.setPixel(i, j, 2, 255);
+        }
+    }
+
+
+    Image gray(img.width, img.height);
+    for (int i = 0; i < img.width; i++) {
+        for (int j = 0; j < img.height; j++) {
+            int r = img.getPixel(i, j, 0);
+            int g = img.getPixel(i, j, 1);
+            int b = img.getPixel(i, j, 2);
+            int avg = (r + g + b) / 3;
+            gray.setPixel(i, j, 0, avg);
+        }
+    }
+
+
+    for (int x = 1; x < img.width - 1; x++) {
+        for (int y = 1; y < img.height - 1; y++) {
+            int gx = gray.getPixel(x + 1, y, 0) - gray.getPixel(x - 1, y, 0);
+            int gy = gray.getPixel(x, y + 1, 0) - gray.getPixel(x, y - 1, 0);
+
+            int val = sqrt(gx * gx + gy * gy);
+
+            if (val > threshold) {
+                newImg.setPixel(x, y, 0, 0);
+                newImg.setPixel(x, y, 1, 0);
+                newImg.setPixel(x, y, 2, 0);
+            }
+        }
+    }
+}
+
+void img_effect(Image& img) {
+
+    for (int y = 0; y < img.height; y++) {
+        for (int x = 0; x < img.width; x++) {
+
+            int r = img.getPixel(x, y, 0);
+            int g = img.getPixel(x, y, 1);
+            int b = img.getPixel(x, y, 2);
+
+            if (y % 5 == 0 || y % 5 == 1 || y % 5 == 2) {
+                r = r * 0.3;
+                g = g * 0.3;
+                b = b * 0.3;
+            }
+
+            img.setPixel(x, y, 0, r);
+            img.setPixel(x, y, 1, g);
+            img.setPixel(x, y, 2, b);
+        }
+    }
+
+    int pp = (img.width * img.height) / 70;
+    for (int i = 0; i < pp; i++) {
+
+        int x = rand() % img.width;
+        int y = rand() % img.height;
+
+        img.setPixel(x, y, 0, 255);
+        img.setPixel(x, y, 1, 255);
+        img.setPixel(x, y, 2, 255);
+    }
+}
 
 void loadImage(Image& image, string& currentName) {
     while (true) {
