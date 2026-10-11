@@ -54,7 +54,7 @@ void black_and_white(Image& image) {
                 image(i,j,1)=avr;
                 image(i,j,2)=avr;
 
-                if (avr >= 127.5)
+                if (avr >= 128)
                     avr =255;
                 else
                     avr = 0;
@@ -97,9 +97,7 @@ void frame(Image& image){
     if(choice==1){
         for(int i=0; i<image.height; i++){
             for(int j=0; j<image.width; j++){
-                if(i<frameshape||i>=image.height-frameshape||
-                   j<frameshape||j>=image.width-frameshape){
-
+                if(i<frameshape||i>=image.height-frameshape||j<frameshape||j>=image.width-frameshape){
                     image(j,i,0)=0;
                     image(j,i,1)=255;
                     image(j,i,2)=0;
@@ -117,38 +115,28 @@ void frame(Image& image){
 
         for(int i=0; i<image.height; i++){
             for(int j=0; j<image.width; j++){
-
-                if(i<linethick||
-                   i>=image.height-linethick||
-                   j<linethick||
-                   j>=image.width-linethick){
-
+                if(i<linethick||i>=image.height-linethick||j<linethick||j>=image.width-linethick){
                     image(j,i,0)=255;
                     image(j,i,1)=0;
                     image(j,i,2)=0;
                 }
 
-                else if(i<linethick*2 ||
-                        i>=image.height-linethick*2||
-                        j<linethick*2 ||
-                        j>=image.width-linethick*2){
-
+                else if(i<linethick*2 ||i>=image.height-linethick*2||j<linethick*2 ||j>=image.width-linethick*2){
                     image(j,i,0)=0;
                     image(j,i,1)=255;
                     image(j,i,2)=0;
                 }
 
-                else if (i<linethick*3 ||
-                         i>=image.height-linethick*3||
-                         j<linethick*3 ||
-                         j>=image.width-linethick*3){
-
+                else if (i<linethick*3 ||i>=image.height-linethick*3||j<linethick*3 ||j>=image.width-linethick*3){
                     image(j,i,0)=0;
                     image(j,i,1)=0;
                     image(j,i,2)=255;
                 }
             }
         }
+    }
+    else{
+        cout << "Invalid choice" << endl;
     }
 }
 
@@ -223,6 +211,7 @@ Image rotate_image(const Image& image, int degree) {
         }
 
         default:
+            cout << "Invalid degree" << endl;
             return image;
     }
 }
@@ -252,6 +241,10 @@ void applyresize(Image& image){
     int newwidth ,newheight;
     cout<<"enter the new width and height respectively: ";
     cin>>newwidth>>newheight;
+    while(newwidth <= 0 || newheight <= 0){
+        cout << "Invalid dimensions. Enter again: ";
+        cin >> newwidth >> newheight;
+    }
 
     double widthratio = image.width / (double)newwidth;
     double heightratio = image.height / (double)newheight;
@@ -290,14 +283,31 @@ void merge_images(Image &image1, Image &image2,int new_width, int new_height){
         }
     }
 
-image = merged_image;
+image1 = merged_image;
 }
+// common area
+void common_area_merge(Image &image1, Image &image2){
+    int common_width = min(image1.width, image2.width);
 
+    int common_height = min(image1.height, image2.height);
+
+    Image merged_image(common_width, common_height);
+
+    for (int i = 0; i < common_width; i++){
+        for (int j = 0; j < common_height; j++){
+            for (int k = 0; k < 3; k++){
+                merged_image(i, j, k) =(image1(i, j, k)+image2(i, j, k)) / 2;
+            }
+        }
+    }
+
+    image1 = merged_image;
+}
 
 void resizing_images(Image &image1, Image &image2)
 {
     //image 2 small
-    if (image1.height > image2.height &&image1.width > image2.width){
+    if (image1.height * image1.width > image2.height * image2.width ){
         Image resized_image2(image1.width, image1.height);
 
         double ratio_w2 =double(image2.width) / image1.width;
@@ -315,11 +325,11 @@ void resizing_images(Image &image1, Image &image2)
                 }
             }
         }
-
-        merge_images(image1,resized_image2,image1.width,image1.height);
+        image2 =resized_image2;
+        merge_images(image1,image2,image1.width,image1.height);
     }
 //image 1 small
-    else if (image2.height > image1.height &&image2.width > image1.width){
+    else if (image2.width * image2.height >image1.width * image1.height){
         Image resized_image1(image2.width, image2.height);
 
         double ratio_w1 =double(image1.width) / image2.width;
@@ -331,40 +341,25 @@ void resizing_images(Image &image1, Image &image2)
                 int old_width = i * ratio_w1;
                 int old_height = j * ratio_h1;
 
-                for (int k = 0; k < 3; k++)
-                {
+                for (int k = 0; k < 3; k++){
                     resized_image1(i, j, k) =
                     image1(old_width, old_height, k);
                 }
             }
         }
-
-        merge_images(resized_image1,image2,image2.width,image2.height);
+        image1 =resized_image1;
+        merge_images(image1,image2,image2.width,image2.height);
     }
 
     else if (image1.height == image2.height &&image2.width == image1.width){
          merge_images(image1,image2,image1.width,image1.height);
     }
-}
-
-// common area
-void common_area_merge(Image &image1, Image &image2){
-    int common_width = min(image1.width, image2.width);
-
-    int common_height = min(image1.height, image2.height);
-
-    Image merged_image(common_width, common_height);
-
-    for (int i = 0; i < common_width; i++){
-        for (int j = 0; j < common_height; j++){
-            for (int k = 0; k < 3; k++){
-                merged_image(i, j, k) =(image1(i, j, k)+image2(i, j, k)) / 2;
-            }
-        }
+    else{
+        common_area_merge(image1, image2);
     }
-
-image = merged_image;
 }
+
+
 
 //======================================================================================================
 
@@ -448,14 +443,19 @@ void crop_image(Image& image){
 void blur(Image& image) {
 
     Image oldimage = image;
-
     int level;
-
-    cout << "enter the level";
+    cout << "Enter the level (1-3): ";
     cin >> level;
+    while (cin.fail() || level < 1 || level > 3)
+    {
+        cin.clear();
+        cin.ignore(10000, '\n');
+
+        cout << "Invalid level. Enter a value from 1 to 3: ";
+        cin >> level;
+    }
 
     int r = 1;
-
     if(level == 1){
         r = 3;
     }
@@ -482,10 +482,7 @@ void blur(Image& image) {
                     int ni = i + di;
                     int nj = j + dj;
 
-                    if(ni >= 0 &&
-                       ni < image.width &&
-                       nj >= 0 &&
-                       nj < image.height){
+                    if(ni >= 0 &&ni < image.width &&nj >= 0 && nj < image.height){
 
                         sumr += oldimage(ni,nj,0);
                         sumg += oldimage(ni,nj,1);
@@ -895,24 +892,34 @@ while (true) {
             break;
 
         case 9: {
+            Image image1 =image;
             Image image2;
             string file2;
-
             cout << "Enter second image name: ";
             cin >> file2;
-            image2.loadNewImage(file2);
+            try {
+                image2.loadNewImage(file2);
+            }
+            catch(exception& e) {
+                cout << e.what() << endl;
+                break;
+            }
 
             int choice;
             cout << "1. Resize smaller image then merge"<<endl;
             cout << "2. Merge common area"<<endl;
             cin >> choice;
 
-            if (choice == 1)
-                resizing_images(image, image2);
+            if (choice == 1){
+                resizing_images(image1, image2);
+                image = image1;
+            }
+            else if (choice == 2){
+                common_area_merge(image1, image2);
+                image = image1;
+            }
             else
-                common_area_merge(image, image2);
-
-            cout << "Merged image saved"<<endl;
+                cout<<"invalid choice"<<endl;
             break;
         }
 
@@ -948,12 +955,18 @@ while (true) {
             break;
 
         case 17: {
+
             double angle;
             cout << "Enter skew angle: ";
             cin >> angle;
-
-            image = skewing(image, angle);
-            break;
+            if(angle >= 89 || angle <= -89) {
+                cout << "Angle must be between -89 and 89." << endl;
+                break;
+            }
+            else {
+                image = skewing(image, angle);
+                break;
+            }
         }
 
         case 18: {
@@ -990,10 +1003,11 @@ while (true) {
 
             return 0;
         }
+        default:
+            cout << "invalid choice" << endl;
+            break;
     }
-    default:
-    cout << "invalid choice" << endl;
-     break;
+
 }
     return 0;
 }
