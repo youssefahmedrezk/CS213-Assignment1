@@ -190,7 +190,7 @@ Image rotate_image(const Image& image, int degree) {
 
             for (int x = 0; x < image.width; x++)
                 for (int y = 0; y < image.height; y++)
-                    for (int c = 0; c < image.channels; c++)
+                    for (int c = 0; c < 3; c++)
                         output(image.height - 1 - y, x, c) = image(x, y, c);
 
             return output;
@@ -201,7 +201,7 @@ Image rotate_image(const Image& image, int degree) {
 
             for (int x = 0; x < image.width; x++)
                 for (int y = 0; y < image.height; y++)
-                    for (int c = 0; c < image.channels; c++)
+                    for (int c = 0; c < 3; c++)
                         output(image.width - 1 - x,
                                image.height - 1 - y,
                                c) = image(x, y, c);
@@ -214,7 +214,7 @@ Image rotate_image(const Image& image, int degree) {
 
             for (int x = 0; x < image.width; x++)
                 for (int y = 0; y < image.height; y++)
-                    for (int c = 0; c < image.channels; c++)
+                    for (int c = 0; c < 3; c++)
                         output(y,
                                image.width - 1 - x,
                                c) = image(x, y, c);
