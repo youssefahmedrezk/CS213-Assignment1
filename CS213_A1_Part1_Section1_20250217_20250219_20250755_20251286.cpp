@@ -1068,6 +1068,8 @@ while (true) {
             return 0;
         }
     }
+    default:
+    cout << "invalid choice" << endl;
 }
     return 0;
 }
