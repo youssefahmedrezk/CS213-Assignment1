@@ -8,8 +8,8 @@
  * Section: (S1) 
  * TA: Mennat Allah Mamdouh
  * Team:
- *   1. Kholoud Mahmoud Abd El-Rahman - ID: 20250217
- *   2. Farha Mahamoud Abd El-kareem - ID: 20251286
+ *   1. Kholoud Mohamed Abd El-Rahman - ID: 20250217
+ *   2. Farha Mohamed Abd El-kareem - ID: 20251286
  *   3. Youssef Ahmed Rezk Ragab - ID: 20250755
  *   4. Demiana Samir Fawzy - ID: 20250219
  *
@@ -507,6 +507,51 @@ void img_effect(Image& img) {
         img.setPixel(x, y, 2, 255);
     }
 }
+Image skewing(Image& old, double angle)
+{
+    if (angle >= 89 || angle <= -89)
+    {
+        return old;
+    }
+
+    double tan_value = tan(angle * 3.14159265 / 180.0);
+
+    int max_shift = ceil(abs(old.height * tan_value));
+
+    Image new_img(old.width + max_shift, old.height);
+
+    // Fill white background
+    for (int i = 0; i < new_img.height; i++)
+    {
+        for (int j = 0; j < new_img.width; j++)
+        {
+            for (int c = 0; c < 3; c++)
+            {
+                new_img(j, i, c) = 255;
+            }
+        }
+    }
+
+    for (int i = 0; i < old.height; i++)
+    {
+        int shift = round((old.height - 1 - i) * tan_value);
+
+        if (tan_value < 0)
+        {
+            shift += max_shift;
+        }
+
+        for (int j = 0; j < old.width; j++)
+        {
+            for (int c = 0; c < 3; c++)
+            {
+                new_img(j + shift, i, c) = old(j, i, c);
+            }
+        }
+    }
+
+    return new_img;
+}
 void oil(const Image& sourceImage, Image& outputImage, int radius, int levels) {
     int width = sourceImage.width;
     int height = sourceImage.height;
@@ -749,6 +794,7 @@ while (true) {
         case 8:
             applyresize(image);
             break;
+
         case 9:
             saveCurrent(image, currentName);
             break;
@@ -761,7 +807,7 @@ while (true) {
                saveCurrent(image, currentName);
             }
             return 0;
-        }   
+        }
         default:
             cout << "invalid choice" << endl;
     }
