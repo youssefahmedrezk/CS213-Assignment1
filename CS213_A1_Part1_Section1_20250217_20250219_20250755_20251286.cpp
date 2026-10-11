@@ -307,7 +307,7 @@ void merge_images(Image &image1, Image &image2,
 // Filter 9: Merge Images (Resize Option)  ---- kholoud
 void resizing_images(Image &image1, Image &image2)
 {
-    if (image1.height > image2.height ||
+    if (image1.height > image2.height &&
         image1.width > image2.width)
     {
         Image resized_image2(image1.width, image1.height);
@@ -337,7 +337,7 @@ void resizing_images(Image &image1, Image &image2)
                      image1.width,image1.height);
     }
 
-    else if (image2.height > image1.height ||
+    else if (image2.height > image1.height &&
              image2.width > image1.width)
     {
         Image resized_image1(image2.width, image2.height);
@@ -367,7 +367,7 @@ void resizing_images(Image &image1, Image &image2)
                      image2.width,image2.height);
     }
 
-    else if (image1.width == image2.height &&
+    else if (image1.height == image2.height &&
              image2.width == image1.width)
     {
          merge_images(image1,image2,
@@ -845,7 +845,7 @@ int main() {
     cout << "Welcome to the Image Processing Program!" << endl;
     string currentName;
     loadImage(image, currentName);
-    
+
 while (true) {
     cout << "0: Load New Image" << endl;
     cout << "1: Grayscale Conversion" << endl;
@@ -856,9 +856,19 @@ while (true) {
     cout << "6: Rotate Image" << endl;
     cout << "7: Darken and Lighten Image" << endl;
     cout << "8: Resizing Images" << endl;
-    cout << "9: Save Image" << endl;
-    cout << "10: Exit" << endl;
-    cout << "Choose from 0 to 10: ";
+    cout << "9: Merge Images" << endl;
+    cout << "10: Detect Edges" << endl;
+    cout << "11: Crop Image" << endl;
+    cout << "12: Blur Image" << endl;
+    cout << "13: Wano Sunlight Filter" << endl;
+    cout << "14: Old TV Effect" << endl;
+    cout << "15: Purple Filter" << endl;
+    cout << "16: Infrared Filter" << endl;
+    cout << "17: Skew Image" << endl;
+    cout << "18: Oil Painting Filter" << endl;
+    cout << "19: Save Image" << endl;
+    cout << "20: Exit" << endl;
+    cout<<"choose from 0 to 20"<<endl;
 
     int filter_num;
     cin >> filter_num;
@@ -880,7 +890,7 @@ while (true) {
            }
            loadImage(image, currentName);
            break;
-        } 
+        }
         case 1:
             gray_scale(image);
             break;
@@ -909,17 +919,17 @@ while (true) {
               if (mode == 1){
                  vertical_image(image);
                  break;
-              } 
+              }
               else if (mode == 2){
                   horizontal_image(image);
                   break;
-              } 
+              }
               else{
                   cout<<"Invalid mode. Please choose 1 or 2."<<endl;
-               } 
+               }
             }
-            break; 
-        } 
+            break;
+        }
         case 6:{
             int degree;
             cout << "Enter the degree of rotation (90, 180, 270): ";
@@ -933,7 +943,7 @@ while (true) {
             image = rotate_image(image, degree);
             break;
         }
-            
+
         case 7: {
             while (true){
                 int mode;
@@ -946,7 +956,7 @@ while (true) {
                     cin.ignore(10000, '\n');
                     cout << "Please enter a number." << endl;
                     continue;
-                } 
+                }
                 if (mode == 1 || mode == 2) {
                     lighten_darken(image, mode);
                     break;
@@ -961,21 +971,102 @@ while (true) {
             applyresize(image);
             break;
 
-        case 9:
+        case 9: {
+            Image image2;
+            string file2;
+
+            cout << "Enter second image name: ";
+            cin >> file2;
+            image2.loadNewImage(file2);
+
+            int choice;
+            cout << "1. Resize smaller image then merge"<<endl;
+            cout << "2. Merge common area"<<endl;
+            cin >> choice;
+
+            if (choice == 1)
+                resizing_images(image, image2);
+            else
+                common_area_merge(image, image2);
+
+            cout << "Merged image saved"<<endl;
+            break;
+        }
+
+        case 10: {
+            Image edgeImg(image.width, image.height);
+            detectEdges(image, edgeImg, 20);
+            image = edgeImg;
+            break;
+        }
+
+        case 11:
+            crop_image(image);
+            break;
+
+        case 12:
+            blur(image);
+            break;
+
+        case 13:
+            sun_light(image);
+            break;
+
+        case 14:
+            img_effect(image);
+            break;
+
+        case 15:
+            purple_image(image);
+            break;
+
+        case 16:
+            infraredfilter(image);
+            break;
+
+        case 17: {
+            double angle;
+            cout << "Enter skew angle: ";
+            cin >> angle;
+
+            image = skewing(image, angle);
+            break;
+        }
+
+        case 18: {
+            int radius, levels;
+
+            cout << "Enter radius: ";
+            cin >> radius;
+
+            cout << "Enter levels: ";
+            cin >> levels;
+
+            Image output(image.width, image.height);
+
+            oil(image, output, radius, levels);
+
+            image = output;
+            break;
+        }
+
+        case 19:
             saveCurrent(image, currentName);
             break;
-        case 10:{
+
+        case 20: {
             char answer;
+
             cout << "Save before exit? (y/n): ";
             cin >> answer;
+
             answer = tolower(answer);
-            if (answer == 'y') {
-               saveCurrent(image, currentName);
-            }
+
+            if (answer == 'y')
+                saveCurrent(image, currentName);
+
             return 0;
         }
-        default:
-            cout << "invalid choice" << endl;
     }
 }
     return 0;
