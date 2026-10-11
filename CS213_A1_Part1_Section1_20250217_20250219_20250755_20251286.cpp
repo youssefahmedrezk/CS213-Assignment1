@@ -91,7 +91,21 @@ void frame(Image& image){
     cout<<"2. fancy frame"<<endl;
     cout<<"please choose the frame: ";
 
-    cin>>choice;
+    while (true) {
+        cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Please enter a number." << endl;
+            continue;
+        }
+
+        if (choice == 1 || choice == 2)
+            break;
+
+        cout << "Please choose 1 or 2: ";
+    }
     int frameshape= 10;
 
     if(choice==1){
@@ -135,9 +149,7 @@ void frame(Image& image){
             }
         }
     }
-    else{
-        cout << "Invalid choice" << endl;
-    }
+
 }
 
 //================================================================================
@@ -678,14 +690,11 @@ void oil(const Image& sourceImage, Image& outputImage, int radius, int levels) {
 
             if (maxCount > 0) {
 
-                unsigned char finalR =
-                sumR[maxIndex] / maxCount;
+                unsigned char finalR =sumR[maxIndex] / maxCount;
 
-                unsigned char finalG =
-                sumG[maxIndex] / maxCount;
+                unsigned char finalG =sumG[maxIndex] / maxCount;
 
-                unsigned char finalB =
-                sumB[maxIndex] / maxCount;
+                unsigned char finalB =sumB[maxIndex] / maxCount;
 
                 outputImage.setPixel(x, y, 0, finalR);
                 outputImage.setPixel(x, y, 1, finalG);
@@ -853,15 +862,26 @@ while (true) {
         case 6:{
             int degree;
             cout << "Enter the degree of rotation (90, 180, 270): ";
-            cin >> degree;
-            if (cin.fail()) {
-                cin.clear();
-                cin.ignore(10000, '\n');
-                cout << "Please enter a number." << endl;
-                continue;
+
+            while (true) {
+                cin >> degree;
+
+                if (cin.fail()) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Please enter a number: ";
+                    continue;
+                }
+
+                if (degree == 90 || degree == 180 || degree == 270)
+                    break;
+
+                cout << "Choose 90, 180, or 270 only: ";
             }
+
             image = rotate_image(image, degree);
             break;
+
         }
 
         case 7: {
@@ -895,14 +915,18 @@ while (true) {
             Image image1 =image;
             Image image2;
             string file2;
-            cout << "Enter second image name: ";
-            cin >> file2;
-            try {
-                image2.loadNewImage(file2);
-            }
-            catch(exception& e) {
-                cout << e.what() << endl;
-                break;
+            while (true) {
+                cout << "Enter second image name: ";
+                cin >> file2;
+
+                try {
+                    image2.loadNewImage(file2);
+                    break;
+                }
+                catch(exception& e) {
+                    cout << e.what() << endl;
+                    cout << "Try again." << endl;
+                }
             }
 
             int choice;
