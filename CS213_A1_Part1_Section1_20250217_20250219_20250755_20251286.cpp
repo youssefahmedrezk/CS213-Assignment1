@@ -30,41 +30,7 @@
 #include <cmath>
 
 using namespace std;
-
-
-void invert_color(Image& image) {
-    for (int i = 0; i < image.width; i++)
-    {
-        for (int j = 0; j < image.height ; j++)
-        {
-            for (int k = 0; k < 3; k++)
-            {
-                image(i,j,k) = 255 -image(i,j,k);
-         
-            }
-            
-        }
-        
-    }
-}
-
-void lighten_darken(Image& image,int mode) {
-    for (int i = 0; i < image.width; i++) {
-        for (int j = 0; j < image.height; j++) {
-            for (int k = 0; k < 3; k++) {
-                if (mode == 1)
-                {
-                    image(i,j,k) = image(i,j,k)+(255-image(i,j,k))/2;
-                }
-                else if (mode ==2)
-                {
-                    image(i,j,k) = image(i,j,k)/2;
-                }
-            }
-        }
-    }
-}
-
+// Filter 1: Grayscale Conversion ---- kholoud
 void gray_scale(Image& image) {
     for (int i =0;i< image.width ;i++) {
         for (int j =0;j<image.height;j++) {
@@ -73,104 +39,14 @@ void gray_scale(Image& image) {
                 image(i,j,0)=avr;
                 image(i,j,1)=avr;
                 image(i,j,2)=avr;
-
-
             }
         }
     }
 }
 
-void horizontal_image(Image& image) {
-    for (int i =0;i< (image.width/2) ;i++) {
-        for (int j =0;j<(image.height);j++) {
-            for (int k =0;k<3;k++) {
-                swap(image(image.width-1-i,j,k),image(i,j,k));
-            }
+//===================================================================================================================
 
-        }
-    }
-}
-void vertical_image(Image& image) {
-    for (int i =0;i< (image.width) ;i++) {
-        for (int j =0;j<(image.height/2);j++) {
-            for (int k =0;k<3;k++) {
-                swap(image(i,image.height-1-j,k),image(i,j,k));
-            }
-
-        }
-    }
-}
-
-void frame(Image& image){
-   int choice;
-    cout << "choose the frame"<<endl;
-    cout<<"1. simple frame"<<endl;
-    cout<<"2. fancy frame"<<endl;
-    cout<<"please choose the frame: ";
-    cin>>choice;
-    int frameshape= 10;
-    
-    if(choice==1){
-        for(int i=0; i<image.height; i++){
-        for(int j=0; j<image.width; j++){
-            if(i<frameshape||i>=image.height-frameshape||j<frameshape||
-                j>=image.width-frameshape){
-                    image(j,i,0)=0;
-                    image(j,i,1)=255;
-                    image(j,i,2)=0;
-            }
-        }
-    }
-    }
-    else if(choice==2){
-    int linethick=frameshape /3;
-    if(linethick<1)linethick=1;
-    for(int i=0; i<image.height; i++){
-        for(int j=0; j<image.width; j++){
-            if(i<linethick|| i>=image.height-linethick||
-            j<linethick|| j>=image.width-linethick){
-                image(j,i,0)=255;
-                image(j,i,1)=0;
-                image(j,i,2)=0;
-            }
-            else if(i<linethick*2 || i>=image.height-linethick*2||
-            j<linethick*2 || j>=image.width-linethick*2){
-                image(j,i,0)=0;
-                image(j,i,1)=255;
-                image(j,i,2)=0;
-            }
-            else if (i<linethick*3 || i>=image.height-linethick*3||
-                j<linethick*3 || j>=image.width-linethick*3){
-                image(j,i,0)=0;
-                image(j,i,1)=0;
-                image(j,i,2)=255;
-
-            }
-    
-        }
-    }
-    }
-}
-
-void applyresize(Image& image){
-    int newwidth ,newheight;
-    cout<<"enter the new width and height respectively: ";
-    cin>>newwidth>>newheight;
-    double widthratio = image.width / (double)newwidth;
-    double heightratio = image.height / (double)newheight;
-    Image copy(newwidth, newheight) ;  
-    for(int i=0; i<newheight; i++){
-       for(int j=0; j<newwidth; j++){
-           int y = i * heightratio;
-           int x = j * widthratio;
-           for(int c =0 ; c < 3; c++){
-             copy(j,i,c)= image(x,y,c);
-
-           }
-        }
-    }
-    image = copy;
-}
+// Filter 2: Black and White ---- demiana
 void black_and_white(Image& image) {
     for (int i =0;i< image.width ;i++) {
         for (int j =0;j<image.height;j++) {
@@ -185,19 +61,129 @@ void black_and_white(Image& image) {
                     avr =255;
                 else
                     avr = 0;
+
                 image(i,j,0) = avr;
                 image(i,j,1) = avr;
                 image(i,j,2) = avr;
-
-
             }
         }
+    }
+}
 
+//======================================================================================================
+
+// Filter 3: Invert Image --youssef
+void invert_color(Image& image) {
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height ; j++) {
+            for (int k = 0; k < 3; k++) {
+                image(i,j,k) = 255 -image(i,j,k);
+            }
+        }
+    }
+}
+
+//====================================================================================
+
+// Filter 4: Adding a Frame to the Picture --farha
+void frame(Image& image){
+   int choice;
+
+    cout << "choose the frame"<<endl;
+    cout<<"1. simple frame"<<endl;
+    cout<<"2. fancy frame"<<endl;
+    cout<<"please choose the frame: ";
+
+    cin>>choice;
+    int frameshape= 10;
+
+    if(choice==1){
+        for(int i=0; i<image.height; i++){
+            for(int j=0; j<image.width; j++){
+                if(i<frameshape||i>=image.height-frameshape||
+                   j<frameshape||j>=image.width-frameshape){
+
+                    image(j,i,0)=0;
+                    image(j,i,1)=255;
+                    image(j,i,2)=0;
+                }
+            }
+        }
     }
 
+    else if(choice==2){
 
+        int linethick=frameshape /3;
 
+        if(linethick<1)
+            linethick=1;
+
+        for(int i=0; i<image.height; i++){
+            for(int j=0; j<image.width; j++){
+
+                if(i<linethick||
+                   i>=image.height-linethick||
+                   j<linethick||
+                   j>=image.width-linethick){
+
+                    image(j,i,0)=255;
+                    image(j,i,1)=0;
+                    image(j,i,2)=0;
+                }
+
+                else if(i<linethick*2 ||
+                        i>=image.height-linethick*2||
+                        j<linethick*2 ||
+                        j>=image.width-linethick*2){
+
+                    image(j,i,0)=0;
+                    image(j,i,1)=255;
+                    image(j,i,2)=0;
+                }
+
+                else if (i<linethick*3 ||
+                         i>=image.height-linethick*3||
+                         j<linethick*3 ||
+                         j>=image.width-linethick*3){
+
+                    image(j,i,0)=0;
+                    image(j,i,1)=0;
+                    image(j,i,2)=255;
+                }
+            }
+        }
+    }
 }
+
+//================================================================================
+
+// Filter 5: Flip Image (Horizontal)   ---- kholoud
+void horizontal_image(Image& image) {
+    for (int i =0;i< (image.width/2) ;i++) {
+        for (int j =0;j<(image.height);j++) {
+            for (int k =0;k<3;k++) {
+                swap(image(image.width-1-i,j,k),image(i,j,k));
+            }
+        }
+    }
+}
+
+//============================================================================================================
+
+// Filter 5: Flip Image (Vertical)  ---- kholoud
+void vertical_image(Image& image) {
+    for (int i =0;i< (image.width) ;i++) {
+        for (int j =0;j<(image.height/2);j++) {
+            for (int k =0;k<3;k++) {
+                swap(image(i,image.height-1-j,k),image(i,j,k));
+            }
+        }
+    }
+}
+
+//================================================================================================
+
+// Filter 6: Rotate Image --demiana
 Image rotate_image(const Image& image, int degree) {
 
     switch (degree) {
@@ -219,7 +205,9 @@ Image rotate_image(const Image& image, int degree) {
             for (int x = 0; x < image.width; x++)
                 for (int y = 0; y < image.height; y++)
                     for (int c = 0; c < image.channels; c++)
-                        output(image.width - 1 - x, image.height - 1 - y, c) = image(x, y, c);
+                        output(image.width - 1 - x,
+                               image.height - 1 - y,
+                               c) = image(x, y, c);
 
             return output;
         }
@@ -230,7 +218,9 @@ Image rotate_image(const Image& image, int degree) {
             for (int x = 0; x < image.width; x++)
                 for (int y = 0; y < image.height; y++)
                     for (int c = 0; c < image.channels; c++)
-                        output(y, image.width - 1 - x, c) = image(x, y, c);
+                        output(y,
+                               image.width - 1 - x,
+                               c) = image(x, y, c);
 
             return output;
         }
@@ -239,81 +229,94 @@ Image rotate_image(const Image& image, int degree) {
             return image;
     }
 }
-
-void crop_image(Image& image){
-    int x, y, w, h;
-    while (true){
-        cout << "Image size: " << image.width << " x " << image.height << endl;    
-        cout << "Enter start point x y: ";
-        cin >> x >> y;
-        cout << "Enter width height: ";
-        cin >> w >> h;
-        
-        if (x >= 0 && y >= 0 && w > 0 && h > 0 && x + w <= image.width && y + h <= image.height) {
-            break;
-        }
-        else{
-            cout<<"Wrong dimensions, try again." << endl;
-        }
-    }
-    Image cropped(w, h);
-    for (int i = 0; i < w; i++) {
-        for (int j = 0; j < h; j++) {
-             for (int k = 0; k < 3; k++) {
-                 cropped(i, j, k) = image(x + i, y + j, k);
-             }
-        }
-    }
-    image = cropped;
-}
-
-void purple_image(Image& image){
+//=========================================================================================================================
+// Filter 7: Darken and Lighten Image --youssef
+void lighten_darken(Image& image,int mode) {
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
-            image(i, j, 0) = image(i, j, 0)*0.90;
-            image(i, j, 1) = image(i, j, 1)*0.70; 
+            for (int k = 0; k < 3; k++) {
+                if (mode == 1)
+                {
+                    image(i,j,k) = image(i,j,k)+(255-image(i,j,k))/2;
+                }
+                else if (mode ==2)
+                {
+                    image(i,j,k) = image(i,j,k)/2;
+                }
+            }
         }
     }
 }
 
-void sun_light (Image & image) {
-    for (int i = 0 ; i < image.width ; i++) {
-        for (int j = 0 ; j < image.height ; j++) {
-            image(i,j,0) = image(i,j,0)+(255-image(i,j,0))/2;
-            image(i,j,1) = image(i,j,1)+(255-image(i,j,1))/2;
+//==================================================================================================
 
+// Filter 8: Resizing Images --farha
+void applyresize(Image& image){
+    int newwidth ,newheight;
+    cout<<"enter the new width and height respectively: ";
+    cin>>newwidth>>newheight;
 
+    double widthratio = image.width / (double)newwidth;
+    double heightratio = image.height / (double)newheight;
+
+    Image copy(newwidth, newheight);
+
+    for(int i=0; i<newheight; i++){
+       for(int j=0; j<newwidth; j++){
+
+           int y = i * heightratio;
+           int x = j * widthratio;
+
+           for(int c =0 ; c < 3; c++){
+             copy(j,i,c)= image(x,y,c);
+           }
         }
     }
+
+    image = copy;
 }
 
-void merge_images(Image &image1, Image &image2, int new_width, int new_height){
+//===================================================================================================
+
+// Filter 9: Merge Images --kholoud
+void merge_images(Image &image1, Image &image2,
+                  int new_width, int new_height){
+
     Image merged_image(new_width, new_height);
 
     for (int i = 0; i < new_width; i++)
     {
         for (int j = 0; j < new_height; j++)
         {
-            merged_image(i, j, 0) =(image1(i, j, 0) + image2(i, j, 0)) / 2;
+            merged_image(i, j, 0) =
+            (image1(i, j, 0) + image2(i, j, 0)) / 2;
 
-            merged_image(i, j, 1) =(image1(i, j, 1) + image2(i, j, 1)) / 2;
+            merged_image(i, j, 1) =
+            (image1(i, j, 1) + image2(i, j, 1)) / 2;
 
-            merged_image(i, j, 2) =(image1(i, j, 2) + image2(i, j, 2)) / 2;
+            merged_image(i, j, 2) =
+            (image1(i, j, 2) + image2(i, j, 2)) / 2;
         }
     }
 
     merged_image.saveImage("merged.jpg");
 }
 
+//==================================================================================================
+
+// Filter 9: Merge Images (Resize Option)  ---- kholoud
 void resizing_images(Image &image1, Image &image2)
 {
-    if (image1.height > image2.height or image1.width > image2.width) //image 2 small
+    if (image1.height > image2.height ||
+        image1.width > image2.width)
     {
         Image resized_image2(image1.width, image1.height);
 
-        double ratio_w2 = double(image2.width) / image1.width;
+        double ratio_w2 =
+        double(image2.width) / image1.width;
 
-        double ratio_h2 = double(image2.height) / image1.height;
+        double ratio_h2 =
+        double(image2.height) / image1.height;
 
         for (int i = 0; i < image1.width; i++)
         {
@@ -324,21 +327,26 @@ void resizing_images(Image &image1, Image &image2)
 
                 for (int k = 0; k < 3; k++)
                 {
-                    resized_image2(i, j, k) = image2(old_width, old_height, k);
+                    resized_image2(i, j, k) =
+                    image2(old_width, old_height, k);
                 }
             }
         }
 
-        merge_images(image1,resized_image2,image1.width,image1.height);
+        merge_images(image1,resized_image2,
+                     image1.width,image1.height);
     }
 
-    else if (image2.height > image1.height or image2.width > image1.width) //image 1 small
+    else if (image2.height > image1.height ||
+             image2.width > image1.width)
     {
         Image resized_image1(image2.width, image2.height);
 
-        double ratio_w1 =double(image1.width) / image2.width;
+        double ratio_w1 =
+        double(image1.width) / image2.width;
 
-        double ratio_h1 =double(image1.height) / image2.height;
+        double ratio_h1 =
+        double(image1.height) / image2.height;
 
         for (int i = 0; i < image2.width; i++)
         {
@@ -349,24 +357,34 @@ void resizing_images(Image &image1, Image &image2)
 
                 for (int k = 0; k < 3; k++)
                 {
-                    resized_image1(i, j, k) = image1(old_width, old_height, k);
+                    resized_image1(i, j, k) =
+                    image1(old_width, old_height, k);
                 }
             }
         }
 
-        merge_images(resized_image1,image2,image2.width,image2.height);
-    }
-    else if (image1.width == image2.height && image2.width == image1.width) {
-         merge_images(image1,image2,image1.width,image1.height);
+        merge_images(resized_image1,image2,
+                     image2.width,image2.height);
     }
 
+    else if (image1.width == image2.height &&
+             image2.width == image1.width)
+    {
+         merge_images(image1,image2,
+                      image1.width,image1.height);
+    }
 }
 
+//======================================================================================================================================
+
+// Filter 9: Merge Images (Common Area) --kholoud
 void common_area_merge(Image &image1, Image &image2)
 {
-    int common_width = min(image1.width, image2.width);
+    int common_width =
+    min(image1.width, image2.width);
 
-    int common_height =min(image1.height, image2.height);
+    int common_height =
+    min(image1.height, image2.height);
 
     Image merged_image(common_width, common_height);
 
@@ -376,66 +394,18 @@ void common_area_merge(Image &image1, Image &image2)
         {
             for (int k = 0; k < 3; k++)
             {
-                merged_image(i, j, k) =(image1(i, j, k)+ image2(i, j, k)) / 2;
+                merged_image(i, j, k) =
+                (image1(i, j, k)+image2(i, j, k)) / 2;
             }
         }
     }
 
     merged_image.saveImage("common_area.jpg");
 }
-void blur(Image& image) {
-    Image oldimage = image;
-    int level;
-    cout << "enter the level";
-    cin >> level;
-    int r =1;
-    if(level == 1){
-        r = 3;
-    }
-    else if(level == 2){
-        r =7;
-    }
-    else if(level == 3){
-        r = 9;
-    }
-    for (int i = 0; i<image.width; i++){
-        for(int j = 0; j<image.height; j++){
-            int sumr = 0;
-            int sumg = 0;
-            int sumb = 0;
-            int count = 0;
-            for(int di = -r; di<=r; di++){
-                for(int dj = -r; dj<=r; dj++){
-                    int ni = i + di;
-                    int nj = j + dj;
-                    if(ni >= 0 && ni < image.width && nj >= 0 && nj <image.height){
-                        sumr += oldimage(ni,nj,0);
-                        sumg += oldimage(ni,nj,1);
-                        sumb += oldimage(ni,nj,2);
-                        count++;
-                    }
-                }
-            }
-            image(i,j,0) = sumr / count;
-            image(i,j,1) = sumg / count;
-            image(i,j,2) = sumb / count;
-        }
-    }
 
-}
-void infraredfilter(Image& old_photo){
-    Image new_photo(old_photo.width, old_photo.height);
-    for(int i = 0; i< old_photo.width; i++){
-        for(int j = 0; j< old_photo.height; j++){
-            unsigned char r = old_photo(i,j,0);
-            new_photo(i,j,0) = 255;
-            new_photo(i,j,1) = 255 -r ;
-            new_photo(i,j,2) = 255 -r ;
-        }
-    }
-    old_photo = new_photo;
-    
-}
+//======================================================================================================
+
+// Filter 10: Detect Image Edges --demiana
 void detectEdges(Image& img, Image& newImg, int threshold) {
 
     for (int i = 0; i < img.width; i++) {
@@ -446,27 +416,36 @@ void detectEdges(Image& img, Image& newImg, int threshold) {
         }
     }
 
-
     Image gray(img.width, img.height);
+
     for (int i = 0; i < img.width; i++) {
         for (int j = 0; j < img.height; j++) {
+
             int r = img.getPixel(i, j, 0);
             int g = img.getPixel(i, j, 1);
             int b = img.getPixel(i, j, 2);
+
             int avg = (r + g + b) / 3;
+
             gray.setPixel(i, j, 0, avg);
         }
     }
 
-
     for (int x = 1; x < img.width - 1; x++) {
         for (int y = 1; y < img.height - 1; y++) {
-            int gx = gray.getPixel(x + 1, y, 0) - gray.getPixel(x - 1, y, 0);
-            int gy = gray.getPixel(x, y + 1, 0) - gray.getPixel(x, y - 1, 0);
+
+            int gx =
+            gray.getPixel(x + 1, y, 0) -
+            gray.getPixel(x - 1, y, 0);
+
+            int gy =
+            gray.getPixel(x, y + 1, 0) -
+            gray.getPixel(x, y - 1, 0);
 
             int val = sqrt(gx * gx + gy * gy);
 
             if (val > threshold) {
+
                 newImg.setPixel(x, y, 0, 0);
                 newImg.setPixel(x, y, 1, 0);
                 newImg.setPixel(x, y, 2, 0);
@@ -475,6 +454,128 @@ void detectEdges(Image& img, Image& newImg, int threshold) {
     }
 }
 
+//=======================================================================================================
+
+// Filter 11: Crop Images //youssef
+void crop_image(Image& image){
+
+    int x, y, w, h;
+
+    while (true){
+
+        cout << "Image size: "
+             << image.width
+             << " x "
+             << image.height
+             << endl;
+
+        cout << "Enter start point x y: ";
+        cin >> x >> y;
+
+        cout << "Enter width height: ";
+        cin >> w >> h;
+
+        if (x >= 0 && y >= 0 &&
+            w > 0 && h > 0 &&
+            x + w <= image.width &&
+            y + h <= image.height)
+        {
+            break;
+        }
+        else{
+            cout<<"Wrong dimensions, try again."
+                << endl;
+        }
+    }
+
+    Image cropped(w, h);
+
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < h; j++) {
+             for (int k = 0; k < 3; k++) {
+                 cropped(i, j, k) =
+                 image(x + i, y + j, k);
+             }
+        }
+    }
+
+    image = cropped;
+}
+
+//==========================================================================================================================
+
+// Filter 12: Blur Images  --farha
+void blur(Image& image) {
+
+    Image oldimage = image;
+
+    int level;
+
+    cout << "enter the level";
+    cin >> level;
+
+    int r = 1;
+
+    if(level == 1){
+        r = 3;
+    }
+    else if(level == 2){
+        r = 7;
+    }
+    else if(level == 3){
+        r = 9;
+    }
+
+    for (int i = 0; i<image.width; i++){
+
+        for(int j = 0; j<image.height; j++){
+
+            int sumr = 0;
+            int sumg = 0;
+            int sumb = 0;
+            int count = 0;
+
+            for(int di = -r; di<=r; di++){
+
+                for(int dj = -r; dj<=r; dj++){
+
+                    int ni = i + di;
+                    int nj = j + dj;
+
+                    if(ni >= 0 &&
+                       ni < image.width &&
+                       nj >= 0 &&
+                       nj < image.height){
+
+                        sumr += oldimage(ni,nj,0);
+                        sumg += oldimage(ni,nj,1);
+                        sumb += oldimage(ni,nj,2);
+
+                        count++;
+                    }
+                }
+            }
+
+            image(i,j,0) = sumr / count;
+            image(i,j,1) = sumg / count;
+            image(i,j,2) = sumb / count;
+        }
+    }
+}
+//==================================================================================================================
+// Filter 13: Wano Sunlight Filter   ---- kholoud
+void sun_light (Image & image) {
+    for (int i = 0 ; i < image.width ; i++) {
+        for (int j = 0 ; j < image.height ; j++) {
+            image(i,j,0) = image(i,j,0)+(255-image(i,j,0))/2;
+            image(i,j,1) = image(i,j,1)+(255-image(i,j,1))/2;
+        }
+    }
+}
+
+//==============================================================================================
+
+// Filter 14: Old TV Effect  --demiana
 void img_effect(Image& img) {
 
     for (int y = 0; y < img.height; y++) {
@@ -497,6 +598,7 @@ void img_effect(Image& img) {
     }
 
     int pp = (img.width * img.height) / 70;
+
     for (int i = 0; i < pp; i++) {
 
         int x = rand() % img.width;
@@ -507,6 +609,43 @@ void img_effect(Image& img) {
         img.setPixel(x, y, 2, 255);
     }
 }
+
+//==================================================================================
+
+// Filter 15: Purple Filter --youssef
+void purple_image(Image& image){
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            image(i, j, 0) = image(i, j, 0)*0.90;
+            image(i, j, 1) = image(i, j, 1)*0.70;
+        }
+    }
+}
+
+//============================================================================
+
+// Filter 16: Infrared Photography Filter  --farha
+void infraredfilter(Image& old_photo){
+
+    Image new_photo(old_photo.width, old_photo.height);
+
+    for(int i = 0; i< old_photo.width; i++){
+        for(int j = 0; j< old_photo.height; j++){
+
+            unsigned char r = old_photo(i,j,0);
+
+            new_photo(i,j,0) = 255;
+            new_photo(i,j,1) = 255 -r ;
+            new_photo(i,j,2) = 255 -r ;
+        }
+    }
+
+    old_photo = new_photo;
+}
+
+//===============================================================================================================
+
+// Filter 17: Image Skewing Filter --farha
 Image skewing(Image& old, double angle)
 {
     if (angle >= 89 || angle <= -89)
@@ -552,20 +691,22 @@ Image skewing(Image& old, double angle)
 
     return new_img;
 }
+
+//=============================================================================================================================
+
+// Filter 18: Oil Painting Filter --demiana
 void oil(const Image& sourceImage, Image& outputImage, int radius, int levels) {
+
     int width = sourceImage.width;
     int height = sourceImage.height;
 
-
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-
 
             vector<int> intensity(levels, 0);
             vector<int> sumR(levels, 0);
             vector<int> sumG(levels, 0);
             vector<int> sumB(levels, 0);
-
 
             for (int ny = -radius; ny <= radius; ++ny) {
                 for (int nx = -radius; nx <= radius; ++nx) {
@@ -573,23 +714,31 @@ void oil(const Image& sourceImage, Image& outputImage, int radius, int levels) {
                     int currentX = x + nx;
                     int currentY = y + ny;
 
+                    if (currentX >= 0 &&
+                        currentX < width &&
+                        currentY >= 0 &&
+                        currentY < height) {
 
-                    if (currentX >= 0 && currentX < width && currentY >= 0 && currentY < height) {
+                        unsigned char r =
+                        sourceImage.getPixel(currentX, currentY, 0);
 
+                        unsigned char g =
+                        sourceImage.getPixel(currentX, currentY, 1);
 
-                        unsigned char r = sourceImage.getPixel(currentX, currentY, 0);
-                        unsigned char g = sourceImage.getPixel(currentX, currentY, 1);
-                        unsigned char b = sourceImage.getPixel(currentX, currentY, 2);
+                        unsigned char b =
+                        sourceImage.getPixel(currentX, currentY, 2);
 
+                        int currentIntensity =
+                        (r + g + b) / 3;
 
-                        int currentIntensity = (r + g + b) / 3;
-                        int intensityBin = (currentIntensity * levels) / 256;
+                        int intensityBin =
+                        (currentIntensity * levels) / 256;
 
-
-                        if (intensityBin >= levels) intensityBin = levels - 1;
-
+                        if (intensityBin >= levels)
+                            intensityBin = levels - 1;
 
                         intensity[intensityBin]++;
+
                         sumR[intensityBin] += r;
                         sumG[intensityBin] += g;
                         sumB[intensityBin] += b;
@@ -597,9 +746,9 @@ void oil(const Image& sourceImage, Image& outputImage, int radius, int levels) {
                 }
             }
 
-
             int maxIndex = 0;
             int maxCount = 0;
+
             for (int i = 0; i < levels; ++i) {
                 if (intensity[i] > maxCount) {
                     maxCount = intensity[i];
@@ -607,24 +756,39 @@ void oil(const Image& sourceImage, Image& outputImage, int radius, int levels) {
                 }
             }
 
-
             if (maxCount > 0) {
-                unsigned char finalR = sumR[maxIndex] / maxCount;
-                unsigned char finalG = sumG[maxIndex] / maxCount;
-                unsigned char finalB = sumB[maxIndex] / maxCount;
+
+                unsigned char finalR =
+                sumR[maxIndex] / maxCount;
+
+                unsigned char finalG =
+                sumG[maxIndex] / maxCount;
+
+                unsigned char finalB =
+                sumB[maxIndex] / maxCount;
 
                 outputImage.setPixel(x, y, 0, finalR);
                 outputImage.setPixel(x, y, 1, finalG);
                 outputImage.setPixel(x, y, 2, finalB);
             }
+
             else {
-                outputImage.setPixel(x, y, 0, sourceImage.getPixel(x, y, 0));
-                outputImage.setPixel(x, y, 1, sourceImage.getPixel(x, y, 1));
-                outputImage.setPixel(x, y, 2, sourceImage.getPixel(x, y, 2));
+                outputImage.setPixel(
+                    x, y, 0,
+                    sourceImage.getPixel(x, y, 0));
+
+                outputImage.setPixel(
+                    x, y, 1,
+                    sourceImage.getPixel(x, y, 1));
+
+                outputImage.setPixel(
+                    x, y, 2,
+                    sourceImage.getPixel(x, y, 2));
             }
         }
     }
 }
+//==================================================================================================
 void loadImage(Image& image, string& currentName) {
     while (true) {
         cout << "Enter the name of the image file (with valid extension): ";
@@ -674,6 +838,8 @@ void saveCurrent(Image& image, string& currentName) {
         }
     }
 }
+//=================================================================================================
+
 int main() {
     Image image;
     cout << "Welcome to the Image Processing Program!" << endl;
