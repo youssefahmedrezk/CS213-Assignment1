@@ -4,7 +4,9 @@ SuperVisor : Dr. Mohammad El-Ramly
 TA: Mennat Allah Mamdouh
 
 Video demo of the program:
-
+https://drive.google.com/drive/folders/1nOVjar9sHiwQkMprS5NNA_jZdtuLAqrP?usp=sharing
 
 Shared document (team info, who did what, GitHub snapshots,
 system diagram, program snapshots, best and hardest parts, oath):
+
+https://drive.google.com/drive/folders/1ZnUksdQAKiWMXkhgmqJIgqF8VhwR6aq9?usp=sharing
