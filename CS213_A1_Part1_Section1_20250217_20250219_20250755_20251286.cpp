@@ -251,9 +251,12 @@ void lighten_darken(Image& image,int mode) {
 // Filter 8: Resizing Images --farha
 void applyresize(Image& image){
     int newwidth ,newheight;
-    cout<<"enter the new width and height respectively: ";
-    cin>>newwidth>>newheight;
-    while(newwidth <= 0 || newheight <= 0){
+    cout << "Enter the new width and height respectively: ";
+    cin >> newwidth >> newheight;
+    while (cin.fail() || newwidth <= 0 || newheight <= 0) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+
         cout << "Invalid dimensions. Enter again: ";
         cin >> newwidth >> newheight;
     }
@@ -796,7 +799,7 @@ while (true) {
     cout << "18: Oil Painting Filter" << endl;
     cout << "19: Save Image" << endl;
     cout << "20: Exit" << endl;
-    cout<<"choose from 0 to 20"<<endl;
+    cout<<"choose from 0 to 20 :";
 
     int filter_num;
     cin >> filter_num;
@@ -810,9 +813,15 @@ while (true) {
     switch (filter_num) {
         case 0: {
            char answer;
-           cout << "Save the current image first? (y/n): ";
-           cin >> answer;
-           answer = tolower(answer);
+            while (true) {
+                cout << "Save current image first? (y/n): ";
+                cin >> answer;
+                answer = tolower(answer);
+
+                if (answer == 'y' || answer == 'n')
+                    break;
+
+            }
            if (answer == 'y') {
                saveCurrent(image, currentName);
            }
@@ -931,7 +940,22 @@ while (true) {
             int choice;
             cout << "1. Resize smaller image then merge"<<endl;
             cout << "2. Merge common area"<<endl;
-            cin >> choice;
+            while (true) {
+                cout << "Please choose 1 or 2 :";
+                cin >> choice;
+
+                if (cin.fail()) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Please enter a number";
+                    continue;
+                }
+
+                if (choice == 1 || choice == 2)
+                    break;
+                cout << "Invalid choice. Please choose 1 or 2." << endl;
+            }
+
 
             if (choice == 1){
                 resizing_images(image1, image2);
@@ -941,9 +965,7 @@ while (true) {
                 common_area_merge(image1, image2);
                 image = image1;
             }
-            else
-                cout<<"invalid choice"<<endl;
-            break;
+        break;
         }
 
         case 10: {
@@ -978,31 +1000,63 @@ while (true) {
             break;
 
         case 17: {
-
             double angle;
-            cout << "Enter skew angle: ";
-            cin >> angle;
-            if(angle >= 89 || angle <= -89) {
-                cout << "Angle must be between -89 and 89." << endl;
-                break;
-            }
-            else {
-                image = skewing(image, angle);
-                break;
-            }
-        }
+            while (true) {
+                cout << "Enter skew angle: ";
+                cin >> angle;
+                if (cin.fail()) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Please enter a number";
+                    continue;
+                }
 
+                if(angle >= 89 || angle <= -89) {
+                    cout << "Angle must be between -89 and 89." << endl;
+
+                }
+                else {
+                    image = skewing(image, angle);
+                    break;
+                }
+
+            }
+          break;
+        }
         case 18: {
             int radius, levels;
+                while (true) {
+                    cout << "Please choose radius :";
+                    cin >> radius ;
+                    if (cin.fail()) {
+                        cin.clear();
+                        cin.ignore(10000, '\n');
+                        cout << "Please enter a number";
+                        continue;
+                    }
+                    if (radius >=1 && radius <= 10)
+                        break;
 
-            cout << "Enter radius: ";
-            cin >> radius;
+                    cout << "Radius must be between 1 and 10." << endl;
+                }
+            while (true) {
+                cout << "Enter levels: ";
+                cin >> levels;
 
-            cout << "Enter levels: ";
-            cin >> levels;
+                if (cin.fail()) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Please enter a number";
+                    continue;
+                }
+
+                if (levels<=3 && levels >=1)
+                    break;
+
+            cout<<"levels must between 1 and 3"<<endl;
+            }
 
             Image output(image.width, image.height);
-
             oil(image, output, radius, levels);
 
             image = output;
@@ -1015,11 +1069,15 @@ while (true) {
 
         case 20: {
             char answer;
+            while (true) {
+                cout << "Save before exit? (y/n): ";
+                cin >> answer;
+                answer = tolower(answer);
 
-            cout << "Save before exit? (y/n): ";
-            cin >> answer;
+                if (answer == 'y' || answer == 'n')
+                    break;
 
-            answer = tolower(answer);
+            }
 
             if (answer == 'y')
                 saveCurrent(image, currentName);
