@@ -1,0 +1,10 @@
+CS213 Assignment 1 - Part 2 - Image Editor (Qt GUI)
+Section: S1
+SuperVisor : Dr. Mohammad El-Ramly
+TA: Mennat Allah Mamdouh
+
+Video demo of the program:
+
+
+Shared document (team info, who did what, GitHub snapshots,
+system diagram, program snapshots, best and hardest parts, oath):
