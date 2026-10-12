@@ -14,11 +14,23 @@
  *   4. Demiana Samir Fawzy - ID: 20250219
  *
  * Who did what:
- *   Kholoud: Filter 1 (Grayscale), Filter 5 (Flip)
- *   Demiana: Filter 2 (white and black), Filter 6 (Rotate)
- *   Youssef: Filter 3 (Invert), Filter 7 (Lighten and Darken)
- *   Farha:   Filter 4 (Frame), Filter 8 (Resize)
- *   Menu and main function were implemented by all team members.
+ *   Kholoud: Filter 1 (Grayscale), Filter 5 (Flip), Filter 9 (Merge),
+ *            Filter 13 (Wano Sunlight), the GUI
+ *   Demiana: Filter 2 (Black and White), Filter 6 (Rotate),
+ *            Filter 10 (Detect Edges), Filter 14 (Old TV), Filter 18 (Oil Painting)
+ *   Youssef: Filter 3 (Invert), Filter 7 (Lighten and Darken),
+ *            Filter 11 (Crop), Filter 15 (Purple), the GUI
+ *            (window, menu, buttons, load, save, undo)
+ *   Farha:   Filter 4 (Frame), Filter 8 (Resize), Filter 12 (Blur),
+ *            Filter 16 (Infrared), Filter 17 (Skew)
+ *
+ * Menu (the program shows these options):
+ *   File    -> Load Image, Save, Exit
+ *   Edit    -> Undo
+ *   Filters -> 1 to 18 (the same filters are also numbered buttons in the window)
+ *
+ * Files: main.cpp (starts the program), mainwindow.h / mainwindow.cpp (the GUI),
+ *        filters.h (all the filter functions), Image_Class.h (given library).
  */
 #include "Image_Class.h"
 #include <iostream>
